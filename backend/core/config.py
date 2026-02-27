@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     anthropic_api_key: str = ""
 
     # Database
-    database_url: str = "postgresql+asyncpg://fakeshield:password@localhost:5432/fakeshield_db"
+    database_url: str = "postgresql+asyncpg://EverAI:password@localhost:5432/EverAI_db"
 
     # Twilio
     twilio_account_sid: str = ""

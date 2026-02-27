@@ -1,5 +1,5 @@
 """
-FakeShield – FastAPI Backend
+EverAI – FastAPI Backend
 Multi-agent fake news detection system.
 """
 from dotenv import load_dotenv
@@ -54,7 +54,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="FakeShield API",
+    title="EverAI API",
     description="Multi-agent fake news detection system",
     version="1.0.0",
     lifespan=lifespan,

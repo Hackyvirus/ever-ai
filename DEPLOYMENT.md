@@ -1,4 +1,4 @@
-# FakeShield Deployment Guide
+# EverAI Deployment Guide
 
 ## Option 1: Docker Compose (Self-hosted / VPS)
 
@@ -62,13 +62,13 @@ docker-compose logs -f backend
 
 ```bash
 # Build images
-docker build -t fakeshield-backend ./backend
-docker build -t fakeshield-frontend ./frontend
+docker build -t EverAI-backend ./backend
+docker build -t EverAI-frontend ./frontend
 
 # Push to ECR
-aws ecr create-repository --repository-name fakeshield-backend
-docker tag fakeshield-backend:latest <account>.dkr.ecr.<region>.amazonaws.com/fakeshield-backend
-docker push <account>.dkr.ecr.<region>.amazonaws.com/fakeshield-backend
+aws ecr create-repository --repository-name EverAI-backend
+docker tag EverAI-backend:latest <account>.dkr.ecr.<region>.amazonaws.com/EverAI-backend
+docker push <account>.dkr.ecr.<region>.amazonaws.com/EverAI-backend
 
 # Deploy via ECS Task Definition (or use Copilot CLI)
 ```

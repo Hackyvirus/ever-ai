@@ -26,7 +26,7 @@ export default function App() {
         fontSize: '0.75rem',
         color: 'var(--grey)'
       }}>
-        <span>FAKESHIELD © {new Date().getFullYear()}</span>
+        <span>EverAI © {new Date().getFullYear()}</span>
         <span>MULTI-AGENT FAKE NEWS DETECTOR</span>
         <span>POWERED BY OPENAI GPT-4O</span>
       </footer>

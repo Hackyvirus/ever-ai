@@ -1,4 +1,4 @@
--- FakeShield PostgreSQL Schema
+-- EverAI PostgreSQL Schema
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 

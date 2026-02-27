@@ -1,4 +1,4 @@
-# 🔍 FakeShield – Multi-Agent Fake News Detection System
+# 🔍 EverAI – Multi-Agent Fake News Detection System
 
 A production-ready MVP using 5 specialized AI agents to detect fake news, with OpenAI GPT-4o as the default LLM provider — with a provider abstraction layer ready for Gemini and Claude.
 

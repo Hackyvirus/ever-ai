@@ -14,10 +14,9 @@ from core.config import get_settings
 
 log = structlog.get_logger()
 router = APIRouter()
-settings = get_settings()
+settings = get_settings() 
 pipeline = AnalysisPipeline()
 
-# In-memory queue to track pending WA analyses
 _wa_pending: dict[str, str] = {}  # {from_number: query_id}
 
 
@@ -72,7 +71,7 @@ async def _analyze_and_respond(from_number: str, text: str):
             report_url = f"{settings.frontend_url}/report/{result.query_id}"
 
             msg = (
-                f"🔍 *FakeShield Analysis Complete*\n\n"
+                f"🔍 *EverAI Analysis Complete*\n\n"
                 f"{emoji} *Verdict:* {verdict}\n"
                 f"📊 *Credibility Score:* {score}/100\n"
                 f"🎯 *Confidence:* {confidence:.0f}%\n\n"
@@ -114,7 +113,7 @@ async def whatsapp_webhook(
     # Handle commands
     if text.lower() in ["help", "hi", "hello", "start"]:
         response_msg = (
-            "👋 Welcome to *FakeShield*!\n\n"
+            "👋 Welcome to *EverAI*!\n\n"
             "Send me any news article text or WhatsApp forward and I'll analyze it for credibility.\n\n"
             "I'll check:\n"
             "• 🖊️ Author credibility\n"

@@ -15,7 +15,7 @@ async def get_pool() -> asyncpg.Pool:
     if _pool is None:
         db_url = os.getenv(
             "DATABASE_URL",
-            "postgresql://fakeshield:password@localhost:5432/fakeshield_db",
+            "postgresql://EverAI:password@localhost:5432/EverAI_db",
         ).replace("postgresql+asyncpg://", "postgresql://").replace("+asyncpg", "")
         _pool = await asyncpg.create_pool(db_url, min_size=2, max_size=10)
         log.info("db_pool_created")
