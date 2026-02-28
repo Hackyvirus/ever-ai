@@ -28,7 +28,7 @@ export default function App() {
       }}>
         <span>EverAI © {new Date().getFullYear()}</span>
         <span>MULTI-AGENT FAKE NEWS DETECTOR</span>
-        <span>POWERED BY OPENAI GPT-4O</span>
+        <span>POWERED BY EVERSITY TECH LLP</span>
       </footer>
     </div>
   )

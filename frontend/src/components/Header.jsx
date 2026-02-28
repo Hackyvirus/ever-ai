@@ -26,7 +26,7 @@ export default function Header() {
         display: 'flex',
         justifyContent: 'space-between',
       }}>
-        <span>AI-POWERED • 5-AGENT SYSTEM • OPENAI EVERSITY TECH LLP</span>
+        <span>AI-POWERED • 5-AGENT SYSTEM • EVERSITY TECH LLP</span>
         <span>MULTI-AGENT FAKE NEWS DETECTION</span>
       </div>
 
