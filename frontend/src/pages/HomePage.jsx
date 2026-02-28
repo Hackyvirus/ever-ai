@@ -1,129 +1,103 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { analyzeText } from '../lib/api'
 import AgentStatus from '../components/AgentStatus'
 import ReportDashboard from '../components/ReportDashboard'
+import { useLang } from '../lib/LanguageContext'
+import { useTranslation } from '../lib/i18n'
 
-const EXAMPLES = [
-  {
-    label: 'WhatsApp Forward',
-    text: `BREAKING: Scientists at Harvard have confirmed that drinking warm lemon water every morning cures cancer within 3 months. Big Pharma doesn't want you to know this! Share before they delete it. Dr. John Smith from Harvard Medical School published this in Nature journal last week. Over 10,000 patients cured. Forward to save lives!`,
-  },
-  {
-    label: 'News Claim',
-    text: `According to a report by Reuters, the World Health Organization announced that global vaccination rates have reached 78% as of March 2024, the highest level ever recorded. WHO Director Dr. Jane Doe stated that this represents a major milestone in global public health. The report also noted that polio has been eradicated in 5 new countries.`,
-  },
-  {
-    label: 'Political Claim',
-    text: `The government released data showing unemployment dropped to 3.2% last quarter, the lowest rate in 50 years. Finance Minister Carlos Mendez attributed this to new economic policies implemented in 2023. Opposition parties disputed the methodology used in the calculations, claiming the real figure is closer to 6.8% when accounting for underemployment.`,
-  },
-]
+const EXAMPLES = {
+  en: [
+    { label:'WhatsApp Forward', text:`BREAKING: Scientists at Harvard confirmed drinking lemon water cures cancer. Dr. John Smith published this in Nature journal. Big Pharma is hiding this cure! Forward to save lives!` },
+    { label:'News Claim', text:`According to Reuters, the World Health Organization announced global vaccination rates reached 78% as of March 2024. WHO Director stated this is the highest level ever recorded.` },
+    { label:'Political Claim', text:`Narendra Modi is the Prime Minister of India and has been serving since 2014. He leads the BJP party and won the 2024 general elections.` },
+  ],
+  hi: [
+    { label:'WhatsApp फ़ॉरवर्ड', text:`ब्रेकिंग: हार्वर्ड के वैज्ञानिकों ने पुष्टि की है कि नींबू पानी पीने से कैंसर ठीक हो जाता है। डॉ. जॉन स्मिथ ने यह नेचर जर्नल में प्रकाशित किया है। इसे शेयर करें!` },
+    { label:'समाचार दावा', text:`रिपोर्ट के अनुसार नरेंद्र मोदी भारत के प्रधानमंत्री हैं और 2014 से सेवा कर रहे हैं। वे भाजपा पार्टी के नेता हैं।` },
+    { label:'राजनीतिक दावा', text:`सुशांत अत्राम भारत के प्रधानमंत्री हैं। उन्होंने 2024 के चुनाव में जीत हासिल की।` },
+  ],
+  mr: [
+    { label:'WhatsApp फॉरवर्ड', text:`ब्रेकिंग: हार्वर्डच्या शास्त्रज्ञांनी पुष्टी केली की लिंबू पाणी पिल्याने कर्करोग बरा होतो. हे शेअर करा!` },
+    { label:'बातमी दावा', text:`नरेंद्र मोदी भारताचे पंतप्रधान आहेत आणि 2014 पासून सेवा करत आहेत. ते भाजप पक्षाचे नेते आहेत.` },
+    { label:'राजकीय दावा', text:`सुशांत अत्राम भारताचे पंतप्रधान आहेत. त्यांनी 2024 च्या निवडणुकीत विजय मिळवला.` },
+  ],
+}
 
 export default function HomePage() {
   const [text, setText] = useState('')
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState(null)
   const [error, setError] = useState(null)
-  const navigate = useNavigate()
+  const { lang } = useLang()
+  const t = useTranslation(lang)
 
   const handleAnalyze = async () => {
     if (!text.trim() || text.length < 20) return
-    setLoading(true)
-    setResult(null)
-    setError(null)
-
+    setLoading(true); setResult(null); setError(null)
     try {
       const r = await analyzeText(text)
       setResult(r)
-      // Optionally navigate to report page
-      // navigate(`/report/${r.query_id}`)
-    } catch (e) {
+    } catch(e) {
       setError(e.response?.data?.detail || e.message || 'Analysis failed. Check your API key.')
-    } finally {
-      setLoading(false)
-    }
+    } finally { setLoading(false) }
   }
 
+  const examples = EXAMPLES[lang] || EXAMPLES.en
+
   return (
-    <div className="container" style={{ padding: '2rem 1.5rem' }}>
-      {/* Page header */}
-      <div className="fade-up" style={{ marginBottom: '2rem' }}>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', letterSpacing: '0.15em', color: 'var(--grey)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>
-          5-Agent AI System
-        </div>
-        <h2 style={{ marginBottom: '0.5rem' }}>PASTE NEWS TO VERIFY</h2>
-        <p style={{ color: 'var(--grey)', maxWidth: 600 }}>
-          Submit any news article, WhatsApp forward, or social media post. Our 5 AI agents will analyze author credibility, publisher reputation, and verify each claim against evidence.
-        </p>
+    <div className="container" style={{ padding:'1.5rem 1rem' }}>
+      <div className="fade-up" style={{ marginBottom:'1.5rem' }}>
+        <div style={{ fontFamily:'var(--font-mono)', fontSize:'.68rem', letterSpacing:'.12em', color:'var(--grey)', textTransform:'uppercase', marginBottom:'.4rem' }}>5-Agent AI System</div>
+        <h2 style={{ marginBottom:'.4rem' }}>{t.pageTitle}</h2>
+        <p style={{ color:'var(--grey)', maxWidth:600, fontSize:'.9rem' }}>{t.pageDesc}</p>
       </div>
 
       <hr className="rule" />
 
-      {/* Input area */}
-      <div className="fade-up-1" style={{ marginBottom: '1.5rem' }}>
-        <textarea
-          className="news-input"
-          value={text}
-          onChange={e => setText(e.target.value)}
-          placeholder="Paste news text, WhatsApp message, or social media post here…&#10;&#10;Example: 'BREAKING: Scientists confirm that...' or paste a full article."
-          disabled={loading}
-        />
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.8rem', flexWrap: 'wrap', gap: '0.8rem' }}>
-          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            {EXAMPLES.map(ex => (
-              <button
-                key={ex.label}
-                className="btn btn-ghost"
-                style={{ fontSize: '0.8rem', padding: '0.3rem 0.8rem' }}
-                onClick={() => setText(ex.text)}
-                disabled={loading}
-              >
-                {ex.label}
-              </button>
+      <div className="fade-up-1" style={{ marginBottom:'1.2rem' }}>
+        <textarea className="news-input" value={text} onChange={e=>setText(e.target.value)}
+          placeholder={t.inputPlaceholder} disabled={loading} />
+
+        {/* Controls row — responsive */}
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:'.7rem', flexWrap:'wrap', gap:'.6rem' }}>
+          <div style={{ display:'flex', gap:'.4rem', flexWrap:'wrap' }}>
+            {examples.map(ex => (
+              <button key={ex.label} className="btn btn-ghost btn-sm" onClick={()=>setText(ex.text)} disabled={loading}>{ex.label}</button>
             ))}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: text.length < 20 ? 'var(--red)' : 'var(--grey)' }}>
-              {text.length} chars {text.length < 20 && '(min 20)'}
+          <div style={{ display:'flex', alignItems:'center', gap:'.8rem', flexWrap:'wrap' }}>
+            <span style={{ fontFamily:'var(--font-mono)', fontSize:'.72rem', color:text.length<20?'var(--red)':'var(--grey)' }}>
+              {text.length} chars {text.length<20 && t.minChars}
             </span>
-            <button
-              className="btn"
-              onClick={handleAnalyze}
-              disabled={loading || text.length < 20}
-              style={{ opacity: text.length < 20 ? 0.5 : 1 }}
-            >
-              {loading ? <><span className="spinner" style={{ width: 18, height: 18, borderColor: 'rgba(255,255,255,0.3)', borderTopColor: 'white' }} /> ANALYZING…</> : '🔍 ANALYZE'}
+            <button className="btn" onClick={handleAnalyze} disabled={loading||text.length<20} style={{ opacity:text.length<20?.5:1 }}>
+              {loading
+                ? <><span className="spinner" style={{ width:16,height:16,borderColor:'rgba(255,255,255,.3)',borderTopColor:'white' }}/> {t.analyzingBtn}</>
+                : `🔍 ${t.analyzeBtn}`}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Error */}
       {error && (
-        <div className="card" style={{ border: '2px solid var(--red)', background: 'var(--red-light)', marginBottom: '1.5rem' }}>
-          <strong style={{ color: 'var(--red)' }}>❌ Error:</strong> {error}
+        <div className="card" style={{ border:'2px solid var(--red)', background:'var(--red-light)', marginBottom:'1.2rem', fontSize:'.9rem' }}>
+          <strong style={{ color:'var(--red)' }}>❌ Error:</strong> {error}
         </div>
       )}
 
-      {/* Agent progress during loading */}
       {loading && (
-        <div className="fade-up" style={{ marginBottom: '2rem' }}>
-          <h3 style={{ marginBottom: '1rem' }}>RUNNING ANALYSIS PIPELINE</h3>
+        <div className="fade-up" style={{ marginBottom:'1.5rem' }}>
+          <h3 style={{ marginBottom:'.8rem', fontSize:'clamp(1rem,2.5vw,1.5rem)' }}>RUNNING ANALYSIS PIPELINE</h3>
           <AgentStatus result={null} />
         </div>
       )}
 
-      {/* Results */}
       {result && !loading && (
         <div className="fade-up">
           <div className="rule-double" />
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-            <h2>ANALYSIS REPORT</h2>
-            <a
-              href={`/report/${result.query_id}`}
-              style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--blue)' }}
-            >
-              Permalink →
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1.2rem', flexWrap:'wrap', gap:'.5rem' }}>
+            <h2>{t.analysisReport}</h2>
+            <a href={`/report/${result.query_id}`} style={{ fontFamily:'var(--font-mono)', fontSize:'.72rem', color:'var(--blue)', whiteSpace:'nowrap' }}>
+              {t.permalink}
             </a>
           </div>
           <ReportDashboard result={result} />
