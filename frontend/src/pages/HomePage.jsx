@@ -92,6 +92,13 @@ export default function HomePage() {
       )}
 
       {result && !loading && (
+        <div className="fade-up" style={{ background:'var(--amber-light)', border:'1px solid var(--amber)', padding:'.6rem 1rem', marginBottom:'.8rem', fontSize:'.8rem', color:'var(--amber)', fontFamily:'var(--font-mono)', display:'flex', gap:'.5rem', alignItems:'center' }}>
+          <span>⚠</span>
+          <span>AI-generated results may be inaccurate. Always verify independently. <a href="/disclaimer" style={{ color:'var(--amber)', fontWeight:600 }}>Read Disclaimer →</a></span>
+        </div>
+      )}
+
+      {result && !loading && (
         <div className="fade-up">
           <div className="rule-double" />
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1.2rem', flexWrap:'wrap', gap:'.5rem' }}>
